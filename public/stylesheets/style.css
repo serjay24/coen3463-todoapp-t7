@@ -1,0 +1,10 @@
+body {
+	font-family: 'Trebuchet MS', Helvetica, sans-serif;
+	background-image: url('../images/background.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;	
+}
+
+a {
+	text-decoration-color: black;
+}
