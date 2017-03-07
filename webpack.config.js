@@ -16,8 +16,12 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react']
+                    presets: ['latest', 'react']
                 }
+            },
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader'
             }
         ]
     },
