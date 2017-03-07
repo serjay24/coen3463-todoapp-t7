@@ -4,17 +4,18 @@ block content
   br
   section.header
     header
-  .rowl
-    form.col
-      h4 USER LOGIN
+  .container
+    h4 USER LOGIN
+    form
+      
       br
       .row
-        .input-field.col.white-text
-          input#email.validate(type='email')
+        .input-field.col.s8.m8.l8.offset-l2.offset-s2.offset-m2.white-text
+          input#email.validate(type='email', name= 'email')
           label(for='email', data-error='wrong', data-success='right') Email
       .row
-        .input-field.col.white-text
-          input#password.validate(type='password')
+        .input-field.col.s8.m8.l8.offset-l2.offset-s2.offset-m2.white-text
+          input#password.validate(type='password', name= 'password')
           label(for='password') Password
       br 
       .row.center
@@ -26,4 +27,4 @@ block content
         p.center.white-text
             | Don't have account? Click 
             b
-              a.blue-text.link(href= 'http://localhost:3000/sign_up', target= '_blank')   Sign-Up     
+              a.blue-text.link(href= '/signup')   Sign-Up     

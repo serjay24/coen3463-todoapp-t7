@@ -62,11 +62,15 @@ input:-ms-input-placeholder {
     border-radius: 5px;
 }
 
+.container {
+    background: rgba(9, 16, 23, 0.8);
+}
+
 .rowl {
     width: 30%;
     margin: auto;
     border: 2px solid grey;
-    background: rgba(9, 16, 23, 0.8);
+    
     margin-top: 3%;
     padding-bottom: 3%;
     border-radius: 5px; 
