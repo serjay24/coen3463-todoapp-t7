@@ -1,0 +1,112 @@
+body {
+	font-family: 'Trebuchet MS', Helvetica, sans-serif;
+	background-image: url('../images/pattern.jpeg')
+	
+}
+.header
+{
+	background:  black;
+	height:150px;
+}
+
+a {
+	text-decoration-color: black;
+}
+
+.link {
+	color: white;
+	text-decoration: underline;
+}
+
+textarea::-webkit-input-placeholder,
+input::-webkit-input-placeholder {
+	color: gray !important;
+
+}
+ 
+textarea:-moz-placeholder,
+input:-moz-placeholder { /* Firefox 18- */
+	color: gray !important;
+ }
+
+textarea::-moz-placeholder,
+input::-moz-placeholder {  /* Firefox 19+ */
+	color: gray !important;
+}
+
+textarea:-ms-input-placeholder,
+input:-ms-input-placeholder {
+	color: black !important;
+}
+
+.input-field input[type=text]:focus {
+     box-shadow: 0 1px 0 0 blue;
+     padding-bottom: 3%;
+     color: grey;
+
+}
+
+#message:focus {
+     border: 2px solid blue;
+     box-shadow: 0 1px 0 0 blue;
+}
+
+.btn-flat {
+	text-transform: capitalize;
+	color: white;
+}
+
+.rows {
+    border: 2px solid #091017;
+    background: rgba(9, 16, 23, 0.7);
+    border-radius: 5px;
+}
+
+.rowl {
+    width: 30%;
+    margin: auto;
+    border: 2px solid grey;
+    background: rgba(9, 16, 23, 0.8);
+    margin-top: 3%;
+    padding-bottom: 3%;
+    border-radius: 5px; 
+   
+}
+
+h4 {
+    text-align: center;
+    color: white;
+    border: 2px solid #091017;
+    background-color: #091017;
+    margin-bottom: 7%;
+
+}
+
+thead {
+	background-color: black;
+	color: white;
+    text-align: center;
+
+}
+.card {
+    border: 2px solid #9cea17;
+    background: rgba(254, 254, 254, 0.7);
+}
+
+tbody {
+    background: rgba(254, 254, 254, 0.5);
+}
+
+table {
+    margin: 3%;
+    width: auto;
+    border-radius: 5px;
+}
+.container.rown{
+    border: 2px solid #091017;
+    background: rgba(9, 16, 23, 0.6);
+    padding-top: 3%;
+    padding-left: 3%;
+    padding-right: 3%;
+    border-radius: 3px;
+}
