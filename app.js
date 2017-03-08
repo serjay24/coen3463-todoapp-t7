@@ -14,7 +14,7 @@ var flash = require('connect-flash');
 var methodOverride = require('method-override');
 const restify = require('express-restify-mongoose');
 const router = express.Router();
-/*
+
 var mdbUrl = "mongodb://admin:admin@ds111589.mlab.com:11589/top-youtube-videos-for-node-js-express-js";
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
                 replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
@@ -25,11 +25,9 @@ mongoose.connect(mdbUrl, options, function(err, res) {
         console.log('MongoDB connected!');
     }
 });
-*/
+
 var index = require('./routes/index');
-var users = require('./routes/users');
-var login = require('./routes/login');
-var signup = require('./routes/signup');
+var auth = require('./routes/auth')
 
 var app = express();
 
@@ -54,8 +52,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//passport.serializeUser(User.serializeUser());
-//passport.deserializeUser(User.deserializeUser());
+var User = require('./models/users');
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use(flash());
 
@@ -70,9 +71,7 @@ app.use(function(req, res, next){
 app.use(router);
 
 app.use('/', index);
-app.use('/users', users);
-app.use('/login', login);
-app.use('/signup', signup);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

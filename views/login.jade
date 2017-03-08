@@ -5,26 +5,32 @@ block content
   section.header
     header
   .container
-    h4 USER LOGIN
-    form
-      
-      br
-      .row
-        .input-field.col.s8.m8.l8.offset-l2.offset-s2.offset-m2.white-text
-          input#email.validate(type='email', name= 'email')
-          label(for='email', data-error='wrong', data-success='right') Email
-      .row
-        .input-field.col.s8.m8.l8.offset-l2.offset-s2.offset-m2.white-text
-          input#password.validate(type='password', name= 'password')
-          label(for='password') Password
-      br 
-      .row.center
-        button.btn.waves-effect.waves-light(type='submit', name='action')
-          | Login
-          i.material-icons.right send
+    .contains
+      h4 USER LOGIN
 
-      .row
-        p.center.white-text
-            | Don't have account? Click 
-            b
-              a.blue-text.link(href= '/signup')   Sign-Up     
+      if (error)
+        .row
+          .col.s12.m12.l12.offset-l2.offset-s2.offset-m2
+            h6#alert.white-text(style= "padding: 1%")= error
+
+      form(method='post', action='/auth/login')
+        br
+        .row
+          .input-field.col.s8.m8.l8.offset-l2.offset-s2.offset-m2.white-text
+            input#username.validate.white-text(type='text', name= 'username', required)
+            label(for='email') Username
+        .row
+          .input-field.col.s8.m8.l8.offset-l2.offset-s2.offset-m2.white-text
+            input#password.validate(type='password', name= 'password', required)
+            label(for='password') Password
+        br 
+        .row.center
+          button.btn.waves-effect.waves-light(type='submit', name='action')
+            | Login
+            i.material-icons.right send
+
+        .row
+          p.center.white-text
+              | Don't have account? Click 
+              b
+                a.blue-text.link(href= '/auth/signup') Sign-Up     
