@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import TodoItems from '../TodoItems'
 
@@ -9,10 +10,15 @@ class Todo extends React.Component {
       newItem: "Default Task Name",
       newNotes: ""
     };
-    this.handleTodoChange = this.handleTodoChange.bind(this);
-    this.addNewTodo = this.addNewTodo.bind(this);
-    this.handleNotesChange = this.handleNotesChange.bind(this);
-    this.delete = this.delete.bind(this);
+    //this.handleNotesChange = this.handleNotesChange.bind(this);
+  }
+
+  renderItems() {
+    return (
+      _.map(this.state.todoArray, (allTodo, index) => 
+      <TodoItems key={index} todo={allTodo} delete={this.handleDelete.bind(this)} />
+      )
+    ) 
   }
 
   handleTodoChange(event) {
@@ -27,7 +33,7 @@ class Todo extends React.Component {
       })
     } 
   }
-
+/*
   handleNotesChange(event) {
     if(event.target.value === "") {
       this.setState({
@@ -40,42 +46,45 @@ class Todo extends React.Component {
       })
     } 
   }
-
+*/
   addNewTodo() {
-    let newTodoItem = {
-      todo: this.state.newItem,
-      notes: this.state.newNotes
-    }
+    let newTodoItem = this.state.newItem
     this.setState({
       todoArray: this.state.todoArray.concat([newTodoItem])
     })
     this.refs.todoField.value="";
-    this.refs.notesField.value="";
     this.setState({
       newItem:"Default Task Name",
-      newNotes: ""
+      //newNotes: ""
     })
   }
 
-  delete(event) {
-    console.log("Click from outside");
-    var array = this.state.todoArray;
-    var index = array.indexOf(event.target.value);
-    console.log(index);
-    array.splice(index, 1);
+  handleDelete(taskToDelete) {
+    console.log("Click Outside");
+    _.remove(this.state.todoArray, todo => todo === taskToDelete);
     this.setState({
-      todoArray:array
+      todoArray: this.state.todoArray
     })
   }
 
   render() {
+
+    //let allTodo = this.state.todoArray;
+    /*
     let allTodo = [];
     for (var index = 0; index < this.state.todoArray.length; index++) {
       allTodo.push(
-        <TodoItems todo={this.state.todoArray[index].todo} notes={this.state.todoArray[index].notes} delete={this.delete} />
+        <TodoItems todo={this.state.todoArray[index].todo} notes={this.state.todoArray[index].notes} delete={this.delete} 
+        key={index} />
       );
     }
-
+    */
+    /*
+    let todoMap = allTodo.map((allTodos, index) => 
+      <TodoItems todo={allTodos} delete={this.handleDelete} 
+        key={index} />
+    );
+    */
     return (
 /*
       <div>
@@ -97,21 +106,21 @@ class Todo extends React.Component {
           <div id="modal1" className="modal">
               <div className="modal-content">
                 <h3 className="center">Add New Todo Item</h3>
-                <input type='text' placeholder='Add Todo Here' ref="todoField" onChange={this.handleTodoChange} />
-                <input type='text' placeholder='Add Notes Here' ref="notesField" onChange={this.handleNotesChange} />
+                <input type='text' placeholder='Add Todo Here' ref="todoField" onChange={this.handleTodoChange.bind(this)} />
+                
               </div>
               <div className="modal-footer">
                 <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat blue white-text center" 
-                onClick={this.addNewTodo}>Add</a>
+                onClick={this.addNewTodo.bind(this)}>Add</a>
               </div>
           </div>
 
           <div className="row">
-            {allTodo}
+            {this.renderItems()}
           </div>
       </div>
     )
   }
 }
 
-export default Todo;
+export default (Todo);
