@@ -8,6 +8,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-preset-latest": "^6.22.0",
@@ -23,8 +24,11 @@
     "jade": "~1.11.0",
     "lodash": "^4.17.4",
     "method-override": "^2.3.7",
+    "moment": "^2.17.1",
+    "moment-timezone": "^0.5.11",
     "mongodb": "^2.2.24",
     "mongoose": "^4.8.5",
+    "mongoose-timestamp": "^0.6.0",
     "morgan": "~1.7.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

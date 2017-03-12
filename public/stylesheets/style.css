@@ -5,3 +5,15 @@ body {
 a {
 	text-decoration-color: black;
 }
+
+.action-bar {
+	cursor: pointer;
+}
+
+.completed {
+	text-decoration: line-through;
+}
+
+.bold-text {
+	font-weight: bold;
+}

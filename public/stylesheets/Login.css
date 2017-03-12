@@ -92,10 +92,6 @@ thead {
     text-align: center;
 
 }
-.card {
-    border: 2px solid #9cea17;
-    background: rgba(254, 254, 254, 0.7);
-}
 
 tbody {
     background: rgba(254, 254, 254, 0.5);

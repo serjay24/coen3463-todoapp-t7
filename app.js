@@ -15,7 +15,7 @@ var methodOverride = require('method-override');
 const restify = require('express-restify-mongoose');
 const router = express.Router();
 
-var mdbUrl = "mongodb://admin:admin@ds111589.mlab.com:11589/top-youtube-videos-for-node-js-express-js";
+var mdbUrl = "mongodb://admin:admin@ds127730.mlab.com:27730/coen3463-todoapp-t7";
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
                 replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 mongoose.connect(mdbUrl, options, function(err, res) {
@@ -27,7 +27,8 @@ mongoose.connect(mdbUrl, options, function(err, res) {
 });
 
 var index = require('./routes/index');
-var auth = require('./routes/auth')
+var auth = require('./routes/auth');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -67,11 +68,11 @@ app.use(function(req, res, next){
   next();
 });
 
-//restify.serve(router, entry);
-app.use(router);
+var Task = require('./models/taskLists')
 
 app.use('/', index);
 app.use('/auth', auth);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

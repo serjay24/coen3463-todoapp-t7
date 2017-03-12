@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     passportLocalMongoose = require('passport-local-mongoose');
+var Task = require('./taskLists');
 
 var User = new Schema({
     username: {
@@ -13,6 +14,10 @@ var User = new Schema({
     },
     first_name: String,
     last_name: String,
+    tasks:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Task'
+    }]
 });
 
 User.plugin(passportLocalMongoose);
