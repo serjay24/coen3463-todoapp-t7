@@ -26,6 +26,8 @@ class Header extends React.Component {
     	<section className="black">
     		<br />
     		{this.renderHeader()}
+        <p className="center white-text">{this.state.userData.email}</p>
+        <br />
     		<div className="container center">
         		<a className="waves-effect waves-light btn-flat center red white-text center" href="/auth/logout">
         		<i className="fa fa-sign-out small left"></i>Logout</a>

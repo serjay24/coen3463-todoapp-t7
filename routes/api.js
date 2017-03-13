@@ -9,37 +9,13 @@ router.get('/user', function(req, res) {
 });
 
 router.get('/task/:filterState', function(req, res) {
-/*
-	Task.find(function(err, tasks){
-		if(err) {
-			res.send(err);
-		}
-		res.json(tasks);
-	})
-*/
 	var filterState = req.params.filterState;
 	console.log(filterState)
 
 	if(req.user === undefined) {
 		res.redirect('/')
 	}
-	/*
-	else {
-		var userId = req.user._id;
 
-		console.log(userId)
-
-		User.findById(userId).populate('tasks').exec(function(err, tasks) {
-			if (err) {
-				console.log(err)
-				return;
-			}
-
-			console.log("Success");
-			res.json(tasks.tasks);
-		})
-	}
-	*/
 	if(filterState === 'all') {
 		var userId = req.user._id;
 		console.log(userId)
@@ -208,6 +184,56 @@ router.delete('/:taskId', function(req, res){
 		})
 	});
 */
+})
+
+router.delete('/:userId/deleteAll', function(req, res) {
+	var userId = req.params.userId
+	var taskArray;
+	var taskIdArray = [];
+
+	User.findById(userId).populate('tasks').exec(function(err, tasks) {
+		if (err) {
+			console.log(err)
+			return;
+		}
+		taskArray = tasks.tasks
+		for(var i = 0; i < taskArray.length; i++) {
+			taskIdArray.push(taskArray[i]._id);
+
+			Task.findByIdAndRemove(taskArray[i]._id, function(err, task){
+				if (err) {
+					console.log("Failed", err)
+				}
+				else {
+					console.log(task);
+				}
+			})
+		}
+
+		for(var i = 0; i < taskArray.length; i++) {
+			User.findByIdAndUpdate(userId, {
+				$pull: {tasks: taskArray[i]._id}},
+				{new: true, upsert: true},
+				function(err, result) {
+					if (err) {
+						console.log(err)
+					}
+					else {
+						console.log("Success", result);
+					}
+			})
+		}
+
+		User.findById(userId).populate('tasks').exec(function(err, tasks) {
+			if (err) {
+				console.log(err)
+				return;
+			}
+			else {
+				res.json(tasks.tasks)
+			}
+		})
+	})
 })
 
 module.exports = router;

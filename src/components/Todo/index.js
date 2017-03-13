@@ -101,7 +101,8 @@ class Todo extends React.Component {
          .then(res => {
             console.log(res.data);
             this.setState({
-              todoArray: res.data
+              todoArray: res.data,
+              newItem: "Default Task Name"
             })
             //console.log(this.state.todoArray)
          })
@@ -129,25 +130,14 @@ class Todo extends React.Component {
       })
     })
   }
-/*
-  fetchTaskData() {
-    
-    axios.get("/api/task").then(res => {
-      console.log(res.data)
+
+  handleDeleteAll() {
+    axios.delete(`/api/${this.state.userData._id}/deleteAll`).then(res => {
       this.setState({
-        todoArray: this.state.todoArray.concat(res.data),
-        userData: this.props.userData
+        todoArray: res.data
       })
-    }).catch(err => {
-      console.log(err)
     })
   }
-
-  componentDidMount() {
-    this.fetchTaskData();
-    setInterval(this.fetchTaskData, this.props.pollInterval);
-  }
-*/
   
   componentWillMount() {
     //var data = this;
@@ -173,6 +163,9 @@ class Todo extends React.Component {
         todoArray: res.data
       })
     })
+    this.setState({
+      filterState: "all"
+    })
   }
 
   getOpenTask() {
@@ -180,6 +173,9 @@ class Todo extends React.Component {
       this.setState({
         todoArray: res.data
       })
+    })
+    this.setState({
+      filterState: "open"
     })
   }
 
@@ -189,6 +185,9 @@ class Todo extends React.Component {
         todoArray: res.data
       })
     })
+    this.setState({
+      filterState: "completed"
+    })
   }
 
   render() {
@@ -196,29 +195,38 @@ class Todo extends React.Component {
     return (
     <div>
       <div className="container center">
-        <h2 className="center white-text">You have {this.state.todoArray.length} Task/s</h2>
-        <a className="waves-effect waves-light btn-flat center black white-text center" href="#modal1">Add Todo Item</a>&nbsp;
-        <a className="waves-effect waves-light btn-flat center red white-text center" href="#modal2">Delete All</a>
+        {this.renderNumberOfTask()}
+        <div className= "container center">
+          {this.renderControls()}
+        </div>
       </div>
       <br />
       <div className= "container center">
-        <a className="waves-effect waves-light btn-flat center blue white-text center" href="#" onClick={this.getAllTask.bind(this)}>
-        ALL
-        </a>&nbsp;
-        <a className="waves-effect waves-light btn-flat center yellow white-text center" href="#" onClick={this.getOpenTask.bind(this)}>
-        Open</a>&nbsp;
-        <a className="waves-effect waves-light btn-flat center grey darken-3 white-text center" href="#" onClick={this.getCompleteTask.bind(this)}>
-        Completed</a>
+        <div className="row">
+          <div className="col s4 m4 l4">
+            <a className="waves-effect waves-light btn-flat center blue white-text center" href="#" onClick={this.getAllTask.bind(this)}>
+            ALL
+            </a>
+          </div>
+          <div className="col s4 m4 l4">
+            <a className="waves-effect waves-light btn-flat center green white-text center" href="#" onClick={this.getOpenTask.bind(this)}>
+            Open</a>
+          </div>
+          <div className="col s4 m4 l4">
+            <a className="waves-effect waves-light btn-flat center grey darken-3 white-text center" href="#" onClick={this.getCompleteTask.bind(this)}>
+            Completed</a>
+          </div>
+        </div>
       </div>
           <div id="modal1" className="modal">
               <div className="modal-content">
                 <h3 className="center">Add New Todo Item</h3>
                 <input type='text' placeholder='Add Todo Here' name="todoField" ref="todoField" onChange={this.handleTodoChange.bind(this)} />
-                
               </div>
-              <div className="modal-footer">
+              <div className="container center">
                 <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat blue white-text center" 
                 onClick={this.addNewTodo.bind(this)}>Add</a>
+                <br />
               </div>
           </div>
 
@@ -236,11 +244,51 @@ class Todo extends React.Component {
         <div className="modal-content">
             <h5 className="center">Are you sure you want to delete all of your task?</h5>
         </div>
-        <div className="modal-footer">
-          <a href="#!" className="modal-action modal-close waves-effect waves-white btn-flat red white-text center">Delete</a>
+        <div className="container center">
+          <a href="#!" className="modal-action modal-close waves-effect waves-white btn-flat red white-text center"
+          onClick={this.handleDeleteAll.bind(this)}>Delete</a>
+          <br />
         </div>
       </div>
     )
+  }
+
+  renderControls() {
+    if(this.state.todoArray.length != 0) {
+      return(
+        <div className="row">
+          <div className="col s6 m6 l6">
+            <a className="waves-effect waves-light btn-flat center black white-text center" href="#modal1">Add Todo Item</a>
+          </div>
+          <div className="col s6 m6 l6">
+            <a className="waves-effect waves-light btn-flat center red white-text center" href="#modal2">Delete All</a>
+           </div>
+        </div>
+      )
+    }
+    return (<a className="waves-effect waves-light btn-flat center black white-text center" href="#modal1">Add Todo Item</a>)
+  }
+  renderNumberOfTask() {
+    if (this.state.filterState === "all") {
+      if (this.state.todoArray.length <= 1) {
+        return (<h2 className="center white-text">You have {this.state.todoArray.length} Task</h2>)
+      }
+      return (<h2 className="center white-text">You have {this.state.todoArray.length} Tasks</h2>)
+    }
+
+    if (this.state.filterState === "open") {
+      if (this.state.todoArray.length <= 1) {
+        return (<h2 className="center white-text">You have {this.state.todoArray.length} Open Task</h2>)
+      }
+      return (<h2 className="center white-text">You have {this.state.todoArray.length} Open Tasks</h2>)
+    }
+
+    if (this.state.filterState === "completed") {
+      if (this.state.todoArray.length <= 1) {
+        return (<h2 className="center white-text">You have {this.state.todoArray.length} Completed Task</h2>)
+      }
+      return (<h2 className="center white-text">You have {this.state.todoArray.length} Completed Tasks</h2>)
+    }
   }
 }
 
