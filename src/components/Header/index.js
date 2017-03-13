@@ -35,20 +35,13 @@ class Header extends React.Component {
     );
   }
 
-  fetchUserData() {
-    axios.get("/api/user")
-       .then(res => {
-          this.setState({
-            userData: res.data
-          })
-        })
+  componentWillMount() {
+    axios.get("/api/user").then(res => {
+      this.setState({
+        userData: res.data
+      })
+    })
   }
-
-  componentDidMount() {
-    this.fetchUserData();
-    setInterval(this.fetchUserData, this.props.pollInterval);
-  }
-  
 }
 
 export default Header;

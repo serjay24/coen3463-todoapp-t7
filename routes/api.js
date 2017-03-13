@@ -8,7 +8,7 @@ router.get('/user', function(req, res) {
 	res.json(req.user);
 });
 
-router.get('/task', function(req, res) {
+router.get('/task/:filterState', function(req, res) {
 /*
 	Task.find(function(err, tasks){
 		if(err) {
@@ -17,9 +17,13 @@ router.get('/task', function(req, res) {
 		res.json(tasks);
 	})
 */
+	var filterState = req.params.filterState;
+	console.log(filterState)
+
 	if(req.user === undefined) {
 		res.redirect('/')
 	}
+	/*
 	else {
 		var userId = req.user._id;
 
@@ -35,13 +39,64 @@ router.get('/task', function(req, res) {
 			res.json(tasks.tasks);
 		})
 	}
-	
+	*/
+	if(filterState === 'all') {
+		var userId = req.user._id;
+		console.log(userId)
+		User.findById(userId).populate('tasks').exec(function(err, tasks) {
+			if (err) {
+				console.log(err)
+				return;
+			}
+			console.log("Success");
+			res.json(tasks.tasks);
+		})
+	}
 
-});
+	if(filterState === 'open') {
+		User.findById(userId).populate('tasks').exec(function(err, tasks) {
+			if (err) {
+				console.log(err)
+			}
+			else {
+				var openData = {
+					owner: req.user._id,
+					isCompleted: false
+				}
+				Task.find(openData).exec(function(err, openTask) {
+					if (err) {
+						console.log(err);
+					}
+					else {
+						res.json(openTask)
+					}
+				})
+			}
+		})
+	}
 
-router.get('/:userId/task', function(req, res) {
+	if(filterState === 'completed') {
+		User.findById(userId).populate('tasks').exec(function(err, tasks) {
+			if (err) {
+				console.log(err)
+			}
+			else {
+				var completeData = {
+					owner: req.user._id,
+					isCompleted: true
+				}
+				Task.find(completeData).exec(function(err, completeTask) {
+					if (err) {
+						console.log(err);
+					}
+					else {
+						res.json(completeTask)
+					}
+				})
+			}
+		})
+	}
 
-	
 
 });
 
