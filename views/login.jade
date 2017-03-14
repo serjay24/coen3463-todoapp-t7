@@ -1,11 +1,9 @@
 extends layout
 
 block content
-  br
   section.header
     header
-  .container
-    .contains
+  .rowl.col-3.col-m-9
       h4 USER LOGIN
 
       if (error)
@@ -16,11 +14,11 @@ block content
       form(method='post', action='/auth/login')
         br
         .row
-          .input-field.col.s8.m8.l8.offset-l2.offset-s2.offset-m2.white-text
+          .input-field.white-text
             input#username.validate.white-text(type='text', name= 'username', required)
             label(for='email') Username
-        .row
-          .input-field.col.s8.m8.l8.offset-l2.offset-s2.offset-m2.white-text
+
+          .input-field.white-text
             input#password.validate(type='password', name= 'password', required)
             label(for='password') Password
         br 
