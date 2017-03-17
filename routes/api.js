@@ -76,6 +76,33 @@ router.get('/task/:filterState', function(req, res) {
 
 });
 
+router.get('/totalCompleted', function(req, res) {
+	var userId = req.user._id
+	var completedCount;
+	
+	Task.find({isCompleted: true, owner: userId}).exec(function (err, CompletedCount) {
+		if(err) {
+			console.log(err)
+		}
+		else {
+			res.json(CompletedCount)
+		}
+	})
+})
+
+router.get('/totalTask', function(req, res) {
+	var userId = req.user._id
+	var allCount;
+	Task.find({owner: userId}).exec(function (err, allCount) {
+		if(err) {
+			console.log(err)
+		}
+		else {
+			res.json(allCount)
+		}
+	})
+})
+
 router.post('/:userId/task', function(req, res) {
 	var userId = req.params.userId;
 	var task = new Task ()

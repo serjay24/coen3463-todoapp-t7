@@ -10,7 +10,9 @@ class Todo extends React.Component {
       todoArray: "",
       userData: "",
       newItem: "Default Task Name",
-      filterState: "all"
+      filterState: "all",
+      completedCount: "",
+      totalCount: ""
     };
   }
 
@@ -77,6 +79,16 @@ class Todo extends React.Component {
         todoArray: res.data
       })
     })
+
+    axios.all([
+      axios.get(`/api/totalCompleted`),
+      axios.get(`/api/totalTask`)
+    ]).then(axios.spread((count, tasks) => {
+      this.setState({
+        completedCount: count.data.length,
+        totalCount: tasks.data.length
+      });
+    }))
   }
 
   handleTodoChange(event) {
@@ -107,6 +119,16 @@ class Todo extends React.Component {
             //console.log(this.state.todoArray)
          })
 
+    axios.all([
+      axios.get(`/api/totalCompleted`),
+      axios.get(`/api/totalTask`)
+    ]).then(axios.spread((count, tasks) => {
+      this.setState({
+        completedCount: count.data.length,
+        totalCount: tasks.data.length
+      });
+    }))
+
     this.refs.todoField.value="";
   }
 
@@ -129,6 +151,16 @@ class Todo extends React.Component {
         todoArray: res.data
       })
     })
+
+    axios.all([
+      axios.get(`/api/totalCompleted`),
+      axios.get(`/api/totalTask`)
+    ]).then(axios.spread((count, tasks) => {
+      this.setState({
+        completedCount: count.data.length,
+        totalCount: tasks.data.length
+      });
+    }))
   }
 
   handleDeleteAll() {
@@ -137,6 +169,17 @@ class Todo extends React.Component {
         todoArray: res.data
       })
     })
+
+    axios.all([
+      axios.get(`/api/totalCompleted`),
+      axios.get(`/api/totalTask`)
+    ]).then(axios.spread((count, tasks) => {
+      this.setState({
+        completedCount: count.data.length,
+        totalCount: tasks.data.length
+      });
+    }))
+    
   }
   
   componentWillMount() {
@@ -144,11 +187,15 @@ class Todo extends React.Component {
 
     axios.all([
       axios.get('/api/user'),
-      axios.get(`/api/task/${this.state.filterState}`)
-    ]).then(axios.spread((user, task) => {
+      axios.get(`/api/task/${this.state.filterState}`),
+      axios.get(`/api/totalCompleted`),
+      axios.get(`/api/totalTask`)
+    ]).then(axios.spread((user, task, count, tasks) => {
       this.setState({
         userData: user.data,
-        todoArray: task.data
+        todoArray: task.data,
+        completedCount: count.data.length,
+        totalCount: tasks.data.length
       });
     }))
   }
@@ -195,7 +242,7 @@ class Todo extends React.Component {
     return (
     <div>
       <div className="container center">
-        {this.renderNumberOfTask()}
+        <h2 className="center white-text">You have {this.state.completedCount} / {this.state.totalCount} Task</h2>
         <div className= "container center">
           {this.renderControls()}
         </div>
@@ -267,28 +314,6 @@ class Todo extends React.Component {
       )
     }
     return (<a className="waves-effect waves-light btn-flat center black white-text center" href="#modal1">Add Todo Item</a>)
-  }
-  renderNumberOfTask() {
-    if (this.state.filterState === "all") {
-      if (this.state.todoArray.length <= 1) {
-        return (<h2 className="center white-text">You have {this.state.todoArray.length} Task</h2>)
-      }
-      return (<h2 className="center white-text">You have {this.state.todoArray.length} Tasks</h2>)
-    }
-
-    if (this.state.filterState === "open") {
-      if (this.state.todoArray.length <= 1) {
-        return (<h2 className="center white-text">You have {this.state.todoArray.length} Open Task</h2>)
-      }
-      return (<h2 className="center white-text">You have {this.state.todoArray.length} Open Tasks</h2>)
-    }
-
-    if (this.state.filterState === "completed") {
-      if (this.state.todoArray.length <= 1) {
-        return (<h2 className="center white-text">You have {this.state.todoArray.length} Completed Task</h2>)
-      }
-      return (<h2 className="center white-text">You have {this.state.todoArray.length} Completed Tasks</h2>)
-    }
   }
 }
 
