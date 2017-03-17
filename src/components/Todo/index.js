@@ -242,7 +242,7 @@ class Todo extends React.Component {
     return (
       <div id="modal2" className="modal">
         <div className="modal-content">
-            <h5 className="center">Are you sure you want to delete all of your task?</h5>
+            <h5 className="center">Are you sure you want to delete all of the completed task?</h5>
         </div>
         <div className="container center">
           <a href="#!" className="modal-action modal-close waves-effect waves-white btn-flat red white-text center"
@@ -261,7 +261,7 @@ class Todo extends React.Component {
             <a className="waves-effect waves-light btn-flat center black white-text center" href="#modal1">Add Todo Item</a>
           </div>
           <div className="col s6 m6 l6">
-            <a className="waves-effect waves-light btn-flat center red white-text center" href="#modal2">Delete All</a>
+            <a className="waves-effect waves-light btn-flat center red white-text center" href="#modal2">Delete All Completed Items</a>
            </div>
         </div>
       )

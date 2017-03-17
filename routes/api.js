@@ -189,6 +189,7 @@ router.delete('/:taskId', function(req, res){
 router.delete('/:userId/deleteAll', function(req, res) {
 	var userId = req.params.userId
 	var taskArray;
+	var completedTask;
 	var taskIdArray = [];
 
 	User.findById(userId).populate('tasks').exec(function(err, tasks) {
@@ -196,44 +197,60 @@ router.delete('/:userId/deleteAll', function(req, res) {
 			console.log(err)
 			return;
 		}
-		taskArray = tasks.tasks
-		for(var i = 0; i < taskArray.length; i++) {
-			taskIdArray.push(taskArray[i]._id);
 
-			Task.findByIdAndRemove(taskArray[i]._id, function(err, task){
-				if (err) {
-					console.log("Failed", err)
-				}
-				else {
-					console.log(task);
-				}
-			})
-		}
-
-		for(var i = 0; i < taskArray.length; i++) {
-			User.findByIdAndUpdate(userId, {
-				$pull: {tasks: taskArray[i]._id}},
-				{new: true, upsert: true},
-				function(err, result) {
-					if (err) {
-						console.log(err)
-					}
-					else {
-						console.log("Success", result);
-					}
-			})
-		}
-
-		User.findById(userId).populate('tasks').exec(function(err, tasks) {
+		Task.find({isCompleted: true, owner: userId}).exec(function(err, result) {
 			if (err) {
 				console.log(err)
-				return;
 			}
 			else {
-				res.json(tasks.tasks)
+				completedTask = result
+				console.log(completedTask);
 			}
+
+			for(var i = 0; i < completedTask.length; i++) {
+				taskIdArray.push(completedTask[i]._id);
+
+				
+
+				Task.findByIdAndRemove(completedTask[i]._id, function(err, task){
+					if (err) {
+						console.log("Failed", err)
+					}
+					else {
+						console.log("Success");
+					}
+				})
+
+			}
+			console.log(taskIdArray)
+
+			for(var i = 0; i < taskIdArray.length; i++) {
+				User.findByIdAndUpdate(userId, {
+					$pull: {tasks: taskIdArray[i]._id}},
+					{new: true, upsert: true},
+					function(err, result) {
+						if (err) {
+							console.log(err)
+						}
+						else {
+							console.log("Success", result);
+						}
+				})
+			}
+
+			User.findById(userId).populate('tasks').exec(function(err, tasks) {
+				if (err) {
+					console.log(err)
+					return;
+				}
+				else {
+					res.json(tasks.tasks)
+				}
+			})
 		})
 	})
 })
+		
+
 
 module.exports = router;
